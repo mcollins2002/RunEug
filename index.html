@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="favicon.png">
+
+    <title>Run Eugene. Run.</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="content/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom styles -->
+    <link href="styles/Cover.css" rel="stylesheet">
+</head>
+<body>
+    <form id="form1">
+		<header>
+			RUN EUGENE. <font style="color: green;">RUN.</font>
+		</header>
+
+		<nav style="display: block; text-align: center; margin-top: 0; margin-bottom: 5px;">
+			<ul class="nav masthead-nav">
+				<li id="li1" class="active"><a href="javascript: Navigate('li1');">Home</a></li>
+				<li id="li2"><a href="javascript: Navigate('li2');">Points of Interest</a></li>
+				<li id="li3"><a href="javascript: Navigate('li3');">Event Calendar</a></li>
+				<li id="li4"><a href="javascript: Navigate('li4');">Training Log</a></li>
+				<li id="li5"><a href="javascript: Navigate('li5');">Message Boards</a></li>
+				<li id="li6"><a href="javascript: Navigate('li6');">Shop Apparel</a></li>
+			</ul>
+		</nav>
+
+		<div id="div-banner">
+			<span style="position: absolute; bottom: 10px; right: 25px; color: #ccc;">Pre's Trail, a 4.07 mile trail with numerous offshoots, is one of the most popular running locations in Eugene, offering miles of soft and well-maintained trails.</span>
+		</div>
+
+		<main>
+			<div id="div-events" style="float: left;">
+				<h3 style="margin: 0; padding: 0 0 5px 0;">October Events</h3>
+				<table style="display: block; width: 100%;" data-bind="foreach:events">
+					<tr>
+						<td style="padding: 3px;white-space: nowrap; min-width: 100px;" data-bind="text:date"></td>
+						<td style="padding: 3px;white-space: nowrap; width: 99%;"><a href="#" data-bind="text:title">Centennial Beer Chase<a></td>
+						<td style="padding: 3px;white-space: nowrap; min-width: 150px;" data-bind="text:location">Spokane, WA</td>
+						<td style="padding: 3px;white-space: nowrap; min-width: 150px;" data-bind="text:distance">50M Relay</td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="right-content">
+				<div id="div-weather" class="green-widget">
+					<h3 style="margin: 0; padding: 0 0 5px 0; color: #ccc;">Eugene Weather</h3>
+
+					<div style="display: block;text-align: center; padding-bottom: 10px;" data-bind="visible: error">
+						An error occurred retrieving weather data.
+						<br />
+						<a href="#" data-bind="click: GetWeather">Attempt data retrieval again <span class="glyphicon glyphicon-refresh"></span></a>
+					</div>
+
+					<div data-bind="visible: !error()">
+						<table style="width: 100%;">
+							<tr>
+								<td style="text-align: center; font-weight: bold; font-size: larger;">
+									Currently: <span data-bind="text:description"></span> <span data-bind="text:temp"></span>&#176;
+								</td>
+							</tr>
+							<tr style="border-bottom: 1px solid white;">
+								<td style="text-align: center; color: #ccc; padding-bottom: 10px;">
+									Last updated: <span data-bind="text:timestamp"></span>
+								</td>
+							</tr>
+						</table>
+
+						<table class="forecast" style="width: 100%" data-bind="foreach:forecast">
+							<tr>
+								<td>
+									<span style="font-weight: bold;" data-bind="text:dayOfWeek"></span>
+									<br />
+									<span style="color: #ccc;" data-bind="text:month"></span>
+									<span style="color: #ccc;" data-bind="text:day"></span>
+								</td>
+								<td>
+									<img width="100px" style="padding-left: 25px;" data-bind="attr:{src: imagePath}" />
+								</td>
+								<td>
+									<span data-bind="text:description"></span>
+									<br />
+									Lo: <span data-bind="text:low"></span>&#176;&nbsp;&nbsp;&nbsp;Hi: <span data-bind="text:high"></span>&#176;
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div id="div-headlines" class="green-widget">
+					<h3 style="margin: 0; padding: 0 0 5px 0; color: #ccc;">Running Headlines</h3>
+					<ul style="padding-left: 20px;" data-bind="foreach:articles">
+						<li><div style="text-overflow: ellipsis; width: 190px; white-space: nowrap; overflow: hidden; display: inline-block; vertical-align: bottom;"><a href="#" data-bind="text: title, click: registerClick"></a></div> <font style="padding-left: 10px; color:#aaa"><span data-bind="text:clickCount"></span> views</font></li>
+					</ul>
+				</div>
+
+				<div id="div-groupruns" class="green-widget">
+					<h3 style="margin: 0; padding: 0 0 5px 0; color: #ccc;">Scheduled Group Runs</h3>
+					<ul style="padding-left: 20px;" data-bind="foreach:groupruns">
+						<li><div style="text-overflow: ellipsis; width: 190px; white-space: nowrap; overflow: hidden; display: inline-block; vertical-align: bottom;"><a href="#" data-bind="text: title, click: registerClick">October 8th 9:00AM</a></div> <font style="padding-left: 10px; color:#aaa"><span data-bind="text:clickCount"></span> RSVPs</font></li>
+					</ul>
+				</div>
+
+				<div id="div-calculator" class="grey-widget">
+					<h3 style="margin: 0; padding: 0 0 5px 0;">Pace Calculator</h3>
+
+					<table>
+						<tr>
+							<td>Distance</td>
+							<td>
+								<input id="txtDistance" onchange="javascript: CalculatePace();" style="width: 50px; text-align: center;" maxlength="4">
+								<select id="selDistanceUnits" onchange="javascript: ChangeDistanceUnits();" style="border-style: none; background-color: #ccc; border-bottom: 1px solid black;">
+									<option value="MI">miles</option>
+									<option value="KM">kilometers</option>
+									<option value="">-- Events --</option>
+									<option value="HM">Half-Marathon</option>
+									<option value="M">Marathon</option>
+									<option value="5">5k</option>
+									<option value="8">8k</option>
+									<option value="10">10k</option>
+									<option value="15">15k</option>
+									<option value="20">20k</option>
+									<option value="25">25k</option>
+									<option value="30">30k</option>
+									<option value="50">50k</option>
+									<option value="100">100k</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Duration</td>
+							<td>
+								<input id="txtDuration" onchange="javascript: CalculatePace();" style="width: 100px; text-align: center;" maxlength="8"> hh:mm:ss
+							</td>
+						</tr>
+					</table>
+
+					<div style="font-size: larger;">
+						Calculated Pace <span id="spnPace" >00:00</span>
+						<select id="selPaceUnits" onchange="javascript: CalculatePace();" style="border-style: none; background-color: #ccc; border-bottom: 1px solid black;">
+							<option value="MI">per mile</option>
+							<option value="KM">per kilometer</option>
+						</select>
+					</div>
+				</div>
+
+				<div id="div-advertisement">
+					<a href="https://www.underarmour.com/en-us/" title="Under Armour Ad" target="_blank"><img src="images/under-armour-ad.jpg" style="width: 100%;" /></a>
+				</div>
+			<div>
+		</main>
+
+		<footer>
+				&copy; 2017 Run Eugene, LLC
+		</footer>
+
+        <script src="scripts/jquery-2.1.3.min.js"></script>
+        <script src="scripts/bootstrap.min.js"></script>
+        <script src="scripts/knockout-3.4.2.js"></script>
+        <script src="scripts/jquery.simpleWeather.min.js"></script>
+		<script type="text/javascript">
+			function Navigate(clickedOption) {
+				$('li').removeClass("active");
+				$('#' + clickedOption).addClass("active");
+			}
+
+			// Pace Calculator -- this can be written to execute onchange with knockout bindings, but the benefit is minimal.
+			function ChangeDistanceUnits() {
+				var distance = $('#txtDistance');
+				var distanceUnits = $('#selDistanceUnits');
+
+				switch (distanceUnits.val())
+				{
+					case "HM":
+						distance.val('13.1');
+						distanceUnits.val('MI');
+						break;
+					case "M":
+						distance.val('26.2');
+						distanceUnits.val('MI');
+						break;
+					case "5":
+					case "8":
+					case "10":
+					case "15":
+					case "20":
+					case "25":
+					case "30":
+					case "50":
+					case "100":
+						distance.val(distanceUnits.val());
+						distanceUnits.val('KM');
+						break;
+					default:
+						distanceUnits.val('MI');
+						break;
+				}
+
+				CalculatePace();
+			}
+
+			function CalculatePace() {
+				var distance = $('#txtDistance');
+				var distanceUnits = $('#selDistanceUnits');
+				var duration = $('#txtDuration');
+				var pace = $('#spnPace');
+				var paceUnits = $('#selPaceUnits');
+
+				// validate inputs
+				if (duration.val() == '' || distance.val() == '')
+					return;
+
+				var regex;
+				regex = new RegExp("^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$");
+
+				if (!regex.test(distance.val()))
+				{
+					alert('Invalid distance.');
+					return;
+				}
+
+				regex = new RegExp("(([0-1][0-9]|2[0-3]):)?([0-5]?[0-9]):([0-5][0-9])");
+
+				if (!regex.test(duration.val()))
+				{
+					alert('Invalid duration.');
+					return;
+				}
+
+				var time = duration.val().split(':');
+				if (time.length > 3)
+				{
+					alert('Invalid time format.');
+					return;
+				}
+
+				// convert duration into seconds
+				var seconds = 0, m = 1;
+				while (time.length > 0) {
+					seconds += m * parseInt(time.pop(), 10);
+					m *= 60;
+				}
+
+				// calculate pace
+				var multiplier = 1;
+				if (distanceUnits.val() == "KM" && paceUnits.val() == "MI")
+					multiplier = 0.625; // convert KM to MI
+				else if (distanceUnits.val() == "MI" && paceUnits.val() == "KM")
+					multiplier = 1.6;	// convert MI to KM
+
+				var distanceForCalc = (distance.val() * multiplier);
+
+				paceInSeconds = seconds/distanceForCalc;
+				var hh = Math.floor(paceInSeconds / 3600);
+				paceInSeconds %= 3600;
+				var mm = Math.floor(paceInSeconds / 60);
+				var ss = parseInt(paceInSeconds % 60);
+
+				var hhmmss = "";
+				if (hh > 0)
+					hhmmss = hh + ":";
+
+				if (mm < 10)
+					hhmmss += "0" + mm + ":";
+				else
+					hhmmss += mm + ":";
+
+				if (ss < 10)
+					hhmmss += "0" + ss;
+				else
+					hhmmss += ss;
+
+				pace.text(hhmmss);
+			}
+
+			// Docs at http://simpleweatherjs.com
+			// Accuweather API might offer more functionality, such as hourly forecasts.
+			$(function() {
+				// Running Events
+				function EventViewModel(date, title, location, distance)
+				{
+					var self = this;
+
+					self.date = ko.observable(date);
+					self.title = ko.observable(title);
+					self.location = ko.observable(location);
+					self.distance = ko.observable(distance);
+				}
+
+				function EventsViewModel(){
+					var self = this;
+
+					self.events = ko.observableArray([
+						new EventViewModel('Sun, Oct 1', 'Mt Tabor Tar N Trail', 'Portland, OR', '10K, 5K'),
+						new EventViewModel('Sat, Oct 7', 'Centennial Beer Chase', 'Springfield, OR', '10K, 5K'),
+						new EventViewModel('Sat, Oct 7', 'Steps to Safety', 'Salem, OR', '10K, 5K'),
+						new EventViewModel('Sun, Oct 8', 'Oregon Women\'s Half Marathon', 'Eugene, OR', '13.1M'),
+						new EventViewModel('Wed, Oct 11', 'Max King XC Invite', 'Medford, OR', 'HS, MS XC'),
+						new EventViewModel('Sat, Oct 14', 'Wonder Run', 'Eugene, OR', '5K'),
+						new EventViewModel('Sat, Oct 14', 'Columbia Riverside 5K', 'Vancouver, WA', '5K'),
+						new EventViewModel('Sun, Oct 15', 'Great Columbia Crossing', 'Astoria, OR, OR', '10K'),
+						new EventViewModel('Wed, Oct 18', 'Country Fair Classic', 'Veneta, OR', 'HS XC'),
+						new EventViewModel('Sat, Wed 21', 'Ram Run', 'Eugene, OR', '10K, 5K'),
+						new EventViewModel('Sun, Wed 22', 'Run With The Duck', 'Eugene, OR', '5K, Kids'),
+						new EventViewModel('Sat, Oct 28', 'Miller Woods 10K', 'McMinnville, OR', '10K'),
+						new EventViewModel('Sun, Oct 29', 'Monster Mash', 'Eugene, OR', '5K'),
+						new EventViewModel('Sun, Oct 29', 'McDonald Forest Trail Runs', 'Corvallis, OR', '15K, 5K'),
+						new EventViewModel('Sun, Oct 29', 'Albany Challenge', 'Albany, OR', 'Team Obstacle Challenge')
+					]);
+				};
+
+				var evm = new EventsViewModel();
+       			ko.applyBindings(evm, document.getElementById("div-events"));
+
+				// Running Headlines
+				function ArticleViewModel(title, clickCount)
+				{
+					var self = this;
+
+					self.title = ko.observable(title);
+					self.clickCount = ko.observable(clickCount);
+
+					self.registerClick = function() {
+						self.clickCount(self.clickCount() + 1);
+					};
+				}
+
+				function ArticlesViewModel(){
+					var self = this;
+
+					self.articles = ko.observableArray([
+						new ArticleViewModel('Smith to Double in Monaco', 9),
+						new ArticleViewModel('Mo Farah Cements his Legacy', 99),
+						new ArticleViewModel('NCAA X-Country Championships', 199)]);
+				};
+
+				var avm = new ArticlesViewModel();
+       			ko.applyBindings(avm, document.getElementById("div-headlines"));
+
+
+				// Group Runs
+				function RunViewModel(title, clickCount)
+				{
+					var self = this;
+
+					self.title = ko.observable(title);
+					self.clickCount = ko.observable(clickCount);
+
+					self.registerClick = function() {
+						self.clickCount(self.clickCount() + 1);
+					};
+				}
+
+				function RunsViewModel(){
+					var self = this;
+
+					self.groupruns = ko.observableArray([
+						new RunViewModel('October 8th 9:00AM', 9),
+						new RunViewModel('October 15th 9:00AM', 3),
+						new RunViewModel('October 22nd 10:00AM', 0)]);
+				};
+
+				var rvm = new RunsViewModel();
+       			ko.applyBindings(rvm, document.getElementById("div-groupruns"));
+
+				// Eugene Weather
+				function ForecastViewModel(data) {
+					var self = this;
+
+					self.day = ko.observable(data.date.split(' ')[0]);
+					self.dayOfWeek = ko.observable(data.day);
+					self.month = ko.observable(data.date.split(' ')[1]);
+					self.description = ko.observable(data.text);
+					self.low = ko.observable(data.low);
+					self.high = ko.observable(data.high);
+					self.imagePath = ko.observable(data.thumbnail);
+				}
+
+				function WeatherViewModel(location, unit) {
+					var self = this;
+
+					self.location = location;
+					self.unit = unit;
+					self.temp = ko.observable();
+					self.description = ko.observable();
+					self.timestamp = ko.observable();
+					self.currentWeather = ko.observable();
+					self.forecast = ko.observableArray([]);
+					self.error = ko.observable(true);
+
+					self.GetWeather = function() {
+						$.simpleWeather({
+							location: self.location,
+							unit: self.unit,
+							success: function(weather) {
+								if (weather.forecast.length > 7)
+									weather.forecast = weather.forecast.slice(0,7);
+
+								self.error(false);
+								self.temp(weather.temp);
+								self.description(weather.currently);
+								self.timestamp(weather.updated);
+								self.forecast($.map(weather.forecast, function(forecastData) {
+									return new ForecastViewModel(forecastData);
+								}))
+							},
+							error: function(error) {
+								self.error(true);
+							}
+						});
+					}
+
+					self.GetWeather();
+				}
+
+				var wvm = new WeatherViewModel('97401', 'f');
+				ko.applyBindings(wvm, document.getElementById("div-weather"));
+			});
+    	</script>
+    </form>
+</body>
+</html>

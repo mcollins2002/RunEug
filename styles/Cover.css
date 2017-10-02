@@ -1,0 +1,227 @@
+a,
+a:focus,
+a:hover {
+    color: #fff;
+}
+
+html,
+body {
+    height: 100%;
+    text-align: justify;
+    background-color: #333;
+}
+
+body {
+    min-width: 342px;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+input, select {
+    color: black;
+    height: 26px;
+    margin: 5px;
+}
+
+header {
+    text-align: center; 
+    color: #ccc; 
+    font-family: Agency FB, Arial, sans-serif; 
+    font-size: 35px; 
+    font-style: italic; 
+    font-weight: bold; 
+    margin-bottom: 0;
+}
+
+main {
+    min-width: 340px;
+    width: 100%;
+    margin: 10px auto; 
+    overflow: hidden;
+}
+
+footer {
+    text-align: center; 
+    display: block;
+    margin: 0; 
+    padding: 10px 0;
+}
+
+#div-advertisement {
+    display: none;
+}
+
+#div-events {
+    display: block;
+}
+
+#div-banner {
+    display: none;
+}
+
+.masthead-nav > li {
+    display: inline-block;
+}
+
+    .masthead-nav > li + li {
+        margin-left: 20px;
+    }
+
+    .masthead-nav > li > a {
+        padding-right: 0;
+        padding-left: 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #aaa;
+        border-bottom: 2px solid transparent;
+    }
+
+        .masthead-nav > li > a:hover,
+        .masthead-nav > li > a:focus {
+            background-color: transparent;
+            border-bottom-color: #aaa;
+        }
+
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+.attention {
+    color: green !important;
+}
+
+.forecast  {
+    margin-bottom: 10px;
+}
+
+.forecast > tbody:not(:last-child)  {
+    border-bottom: 1px solid white;
+}
+
+.forecast > tbody > tr > td {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.green-widget,
+.grey-widget {
+    min-width: 342px;
+    display: block;
+    background-color: green;
+    border-radius: 5px 30px;
+    padding: 10px;
+    margin: 5px;
+    overflow: hidden;
+}
+
+.grey-widget {
+    background-color: #ccc;
+    color: black;
+}
+
+.right-content {
+    padding-top: 20px;
+    overflow: hidden;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    header {
+        font-size: 50px; 
+    }
+    
+    #div-advertisement {
+	display: block; 
+	margin: 5px;
+	border-radius: 5px; 
+	overflow: hidden;
+	width: 45%;
+    }
+
+    .right-content {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	max-height: 750px;
+	margin: 0 auto;
+	overflow: hidden;
+    }
+
+    #div-banner {
+	position: relative; 
+	box-shadow: inset 0px 0px 40px 40px rgba(0,0,0,0.8); 
+ 	overflow: hidden; 
+	horizontal-align: bottom; 
+	background-image: url(../images/prestrail.jpg); 
+	background-position: right 0px top -240px; 
+	background-size: auto 768px;
+	background-repeat:no-repeat;
+	height: 250px; 
+	max-height: 400px;
+	display: block;
+	background-color: black;
+    }
+
+    .green-widget,
+    .grey-widget {
+	display: inline-block;
+	width: 45%;
+    }
+}
+
+@media (min-width: 1068px) {
+    main {
+        max-width: 1200px;
+    }
+    
+    #div-banner {
+        box-shadow: inset 0px 0px 80px 80px rgba(0,0,0,0.8);
+        background-position: right 0px top 45%; 
+        background-size: cover;
+        height: 325px; 
+    }
+    
+    #div-advertisement {
+    	display: block;
+    	width: 100%;
+    }
+    
+    #div-events {
+    	display: block;
+    	width: 65%;
+    }
+    
+    .green-widget,
+    .grey-widget {
+        display: block;
+        width: 100%;
+    }
+        
+    .right-content {
+    	display: block;
+	max-height: none;
+    	padding-top: 0;
+      	width: 350px;
+      	float: right;
+    }
+}
+
+@media (min-width: 1440px) {
+    main {
+        width: 1200px;
+    }
+    
+    #div-events {
+    	width: 825px;
+    }
+    
+    #div-banner {
+        box-shadow: inset 0px 0px 80px 80px rgba(0,0,0,0.8);
+        background-position: right 0px top 50%; 
+        background-size: cover;
+        height: 325px; 
+    }    
+}
